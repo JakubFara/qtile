@@ -54,7 +54,7 @@ from libqtile.utils import guess_terminal
 
 from libqtile.lazy import lazy
 
-from src.colors import nord_fox
+from colors import nord_fox
 # from libqtile import withet as withet_old #import Volume
 from qtile_extras import widget
 # from src.bar1 import bar
@@ -62,9 +62,10 @@ from palette import palette
 from qtile_extras.widget.decorations import PowerLineDecoration, RectDecoration
 
 mod = "mod4"
-
+home_dir = "/home/jakub/"
 # terminal = guess_terminal()
 terminal = "gnome-terminal"
+# path_to_config = os.path.abspath(__file__)[:-len(__file__)]
 
 keys = [
     # A list of available commands that can be bound to keys can be found
@@ -124,7 +125,7 @@ keys = [
     Key(
         [mod],
         'm',
-        lazy.spawn("/home/jakub/Programming/rofi/monitors-layout.sh"),
+        lazy.spawn(f"{home_dir}/.config/qtile/rofi/monitors-layout.sh"),
         desc="Mute/Unmute Volume"
     ),
     Key(
@@ -147,8 +148,8 @@ keys = [
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "a", lazy.spawn("rofi -show drun -show-icons -modi drun, run"), desc="Spawn a command using a prompt widget"),
-    Key([mod], "k", lazy.spawn("/home/jakub/Programming/dmenu/dmenu-kill-process.sh"), desc="Kill process with dmenu"),
-    Key([mod], "n", lazy.spawn("/home/jakub/Programming/my_keyboard/src/switch_keyboards.sh"), desc="Kill process with dmenu"),
+    Key([mod], "k", lazy.spawn(f"{home_dir}/.config/qtile/rofi/kill-process.sh"), desc="Kill process with rofi"),
+    Key([mod], "n", lazy.spawn("/home/jakub/Programming/my_keyboard/src/switch_keyboards.sh"), desc="Swith keyboards."),
     Key([mod], "o", lazy.spawn("rofi -show window"), desc="Show all running apps."),
     Key([mod], "Print", lazy.spawn("flameshot gui"), desc="Show all running apps."),
 ]
