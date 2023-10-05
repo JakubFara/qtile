@@ -57,7 +57,8 @@ from colors import nord_fox
 from qtile_extras import widget
 # from src.bar1 import bar
 from palette import palette
-from my_widgets import MyBattery, MyCalendar, MyVolume, ICONS
+from my_widgets import MyBattery, MyCalendar, MyVolume
+from icons import ICONS
 from qtile_extras.widget.decorations import PowerLineDecoration, RectDecoration
 
 mod = "mod4"
