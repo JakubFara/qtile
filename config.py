@@ -308,6 +308,18 @@ bar = Bar(
             mute_command=[
                 'pactl set-sink-mute 0 toggle'
             ],
+            width=5,
+            padding=0,
+            **powerline_left
+        ),
+        MyVolume(
+            foreground=palette.base,
+            background=palette.blue,
+            emoji=False,
+            mute_command=[
+                'pactl set-sink-mute 0 toggle'
+            ],
+            width=40,
             **powerline_left
         ),
         widget.TextBox(" ", name="default", **powerline),

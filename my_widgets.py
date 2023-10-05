@@ -48,14 +48,8 @@ class MyVolume(widget.Volume):
                 text = f"   {ICONS['cross']}  "
             else:
                 text = f"{self.volume}%"
-            self.text = f"{emoji} {text}"
-            if self.volume != -1:
-                if self.volume < 10:
-                    offset += 4
-                elif self.volume != 100:
-                    offset += 2
-
-            self.text = self.text + " " * offset
+            self.text = f"{emoji}"
+            self.text = self.text
         else:
             if self.volume == -1:
                 self.text = f" {ICONS['cross']}  "
