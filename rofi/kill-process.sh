@@ -47,7 +47,7 @@ function gen_entries()
     done
 }
 
-SEL=$( gen_entries | rofi -dmenu -p "Monitor Setup:" -a 0 -no-custom  | awk '{print $1}' )
+SEL=$( gen_entries | rofi -dmenu -p "Kill Process:" -a 0 -no-custom  | awk '{print $1}' )
 
 echo process ${process_ids[$SEL]}
 kill ${process_ids[$SEL]}
