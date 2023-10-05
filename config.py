@@ -30,9 +30,6 @@ from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 from libqtile.log_utils import logger
 import os
-import subprocess
-
-
 from libqtile import hook
 from libqtile.layout.columns import Columns
 from libqtile.layout.verticaltile import VerticalTile
@@ -50,6 +47,7 @@ from libqtile.config import (
     Screen
 )
 
+import subprocess
 from libqtile.utils import guess_terminal
 
 from libqtile.lazy import lazy
@@ -59,6 +57,7 @@ from colors import nord_fox
 from qtile_extras import widget
 # from src.bar1 import bar
 from palette import palette
+from my_widgets import MyBattery, MyCalendar, MyVolume, ICONS
 from qtile_extras.widget.decorations import PowerLineDecoration, RectDecoration
 
 mod = "mod4"
@@ -191,7 +190,6 @@ groups.append(
         ]
     )
 )
-
 keys.extend([
     Key([mod], "u", lazy.group['0'].dropdown_toggle('term')),
     Key([mod], "y", lazy.group['0'].dropdown_toggle('file manager')),
@@ -267,69 +265,37 @@ powerline_left = {
 # background = "#000000a0"
 background = palette.surface0 + "80"
 
-class MyVolume(widget.Volume):
-    def _update_drawer(self):
-        if self.theme_path:
-            self.drawer.clear(self.background or self.bar.background)
-            if self.volume <= 0:
-                img_name = "audio-volume-muted"
-            elif self.volume <= 30:
-                img_name = "audio-volume-low"
-            elif self.volume < 80:
-                img_name = "audio-volume-medium"
-            else:  # self.volume >= 80:
-                img_name = "audio-volume-high"
-
-            self.drawer.ctx.set_source(self.surfaces[img_name])
-            self.drawer.ctx.paint()
-        elif self.emoji:
-            self.emoji_list = ["\U0001f507", "\U0001f508", "\U0001f509", "\U0001f50a"]
-            if self.volume <= 0:
-                emoji = self.emoji_list[0]
-            elif self.volume <= 30:
-                emoji = self.emoji_list[1]
-            elif self.volume < 80:
-                emoji = self.emoji_list[2]
-            elif self.volume >= 80:
-                emoji = self.emoji_list[3]
-            if self.volume == -1:
-                text = "M"
-            else:
-                text = f"{self.volume}%"
-            self.text = f"{emoji} {text}"
-        else:
-            if self.volume == -1:
-                self.text = "M"
-            else:
-                self.text = "{}%".format(self.volume)
-
-
 bar = Bar(
     [
         # widget.TextBox("", background="", name="default", **powerline),
         widget.TextBox(" ", background=background, name="default", **powerline),
-        widget.Bluetooth(
-            font="MesloLGS NF Regular",
-            hci0="/dev_F8_94_C2_D5_B1_E0",
-            background=palette.red,
-            # foreground=colors[15],
-            # fontsize=14,
-            **powerline
-        ),
+        # widget.Bluetooth(
+        #     font="MesloLGS NF Regular",
+        #     hci0="/dev_F8_94_C2_D5_B1_E0",
+        #     background=palette.red,
+        #     # foreground=colors[15],
+        #     # fontsize=14,
+        #     **powerline
+        # ),
         widget.GroupBox(foreground=palette.maroon, background=palette.subtext0, **powerline_left),
         widget.TextBox(" ", name="default", **powerline),
         widget.WindowName(foreground="#00000000", background=background, **powerline),
+        widget.TextBox(" ", name="default", **powerline),
+        MyCalendar(foreground="#000000", background=palette.subtext0, **powerline_left),
         # widget.GroupBox(foreground=palette.base, background=palette.crust, **powerline_left),
         widget.TextBox(" ", name="default", **powerline),
         widget.CurrentLayoutIcon(foreground=palette.base, background=palette.sky, **powerline_left),
         widget.TextBox("", background="", name="default", **powerline),
         widget.TextBox(" ", name="default", **powerline),
         # widget.UPowerWidget(background=palette.crust, **powerline_left),
-        widget.Battery(
+        MyBattery(
             background=palette.rosewater,
             foreground=palette.base,
-            format='Battery: {percent:2.0%}',
+            font="Font Awesome",
+            # format=f"{icons['battery']}" + '{percent:2.0%}',
+            format="lol",
             padding=5,
+            low_foreground="red",
             **powerline_left
         ),
         widget.TextBox(" ", name="default", **powerline),
@@ -343,9 +309,9 @@ bar = Bar(
             **powerline_left
         ),
         widget.TextBox(" ", name="default", **powerline),
-        widget.Clock(foreground=palette.base, background=palette.red, **powerline_left),
+        widget.Clock(fmt=ICONS["clock"], foreground=palette.base, background=palette.red, **powerline_left),
         widget.TextBox(" ", name="default", **powerline),
-        widget.QuickExit(foreground=palette.base, background=palette.subtext0, **powerline_left),
+        widget.QuickExit(default_text=ICONS["turnoff"], reground=palette.base, background=palette.subtext0, **powerline_left),
        # widget.TextBox(" ", name="default", **powerline_left),
     ],
     30,
