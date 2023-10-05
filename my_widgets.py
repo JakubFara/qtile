@@ -23,32 +23,45 @@ class MyVolume(widget.Volume):
 
             self.drawer.ctx.set_source(self.surfaces[img_name])
             self.drawer.ctx.paint()
-        elif self.emoji:
 
+        elif self.emoji:
             self.emoji_list = [
                 ICONS["volume_0"],
                 ICONS["volume_1"],
                 ICONS["volume_2"],
                 ICONS["volume_3"],
             ]
+            emoji_offset = [1, 0, 0, 0]
             if self.volume <= 0:
                 emoji = self.emoji_list[0]
+                offset = emoji_offset[0]
             elif self.volume <= 30:
                 emoji = self.emoji_list[1]
+                offset = emoji_offset[1]
             elif self.volume < 80:
                 emoji = self.emoji_list[2]
+                offset = emoji_offset[2]
             elif self.volume >= 80:
                 emoji = self.emoji_list[3]
+                offset = emoji_offset[3]
             if self.volume == -1:
-                text = "M"
+                text = f"   {ICONS['cross']}  "
             else:
                 text = f"{self.volume}%"
             self.text = f"{emoji} {text}"
+            if self.volume != -1:
+                if self.volume < 10:
+                    offset += 4
+                elif self.volume != 100:
+                    offset += 2
+
+            self.text = self.text + " " * offset
         else:
             if self.volume == -1:
-                self.text = "M"
+                self.text = f" {ICONS['cross']}  "
             else:
                 self.text = "{}%".format(self.volume)
+
 
 class MyCalendar(widget.KhalCalendar):
     def poll(self):
