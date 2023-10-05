@@ -1,4 +1,3 @@
-
 ICONS = {
     "logo": "",     # fa-redhat
     "temp": "",     # fa-fire-extinguisher
@@ -8,7 +7,6 @@ ICONS = {
     "rss": "",      # fa-rss
     "sync": "",     # fa-sync-alt
     "tasks": "",    # fa-calendar-check-o
-    "calendar": "&#xf073;",
     "repeat": "",   # fa-repeat
     "email": "",    # fa-at
     "gmail": "",      # fa-google
@@ -30,11 +28,15 @@ ICONS = {
 
     "systray": "",  # fa-fedora
 
+    "cross": "&#xf057;",
+    "calendar": "&#xf073;",
     "volume_0": "&#xf026;",
     "volume_1": "&#xf027;",
     "volume_2": "&#xf027;",
     "volume_3": "&#xf028;",
+
     "clock": "&#xf017;{}",
+
     "turnoff": "&#xf011;",
 
     "battery_0": "&#xf244;",

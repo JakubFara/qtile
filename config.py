@@ -300,6 +300,7 @@ bar = Bar(
             **powerline_left
         ),
         widget.TextBox(" ", name="default", **powerline),
+
         MyVolume(
             foreground=palette.base,
             background=palette.blue,
@@ -310,9 +311,19 @@ bar = Bar(
             **powerline_left
         ),
         widget.TextBox(" ", name="default", **powerline),
-        widget.Clock(fmt=ICONS["clock"], foreground=palette.base, background=palette.red, **powerline_left),
+        widget.Clock(
+            fmt=ICONS["clock"],
+            foreground=palette.base,
+            background=palette.red,
+            **powerline_left
+        ),
         widget.TextBox(" ", name="default", **powerline),
-        widget.QuickExit(default_text=ICONS["turnoff"], reground=palette.base, background=palette.subtext0, **powerline_left),
+        widget.QuickExit(
+            default_text=ICONS["turnoff"],
+            reground=palette.base,
+            background=palette.subtext0,
+            **powerline_left
+        ),
        # widget.TextBox(" ", name="default", **powerline_left),
     ],
     30,

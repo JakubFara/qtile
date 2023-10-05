@@ -62,7 +62,7 @@ do
     do
         if [ $entry_a != $entry_b ]
         then
-            TILES[$index]=" ${MONITORS[$entry_a]} -> ${MONITORS[$entry_b]}"
+            TILES[$index]=" ${MONITORS[$entry_b]} -> ${MONITORS[$entry_a]}"
             # COMMANDS[$index]="xrandr --output ${MONITORS[$entry_a]} --auto \
             #                   --output ${MONITORS[$entry_b]} --auto --left-of ${MONITORS[$entry_a]}"
 
@@ -84,7 +84,7 @@ do
     do
         if [ $entry_a != $entry_b ]
         then
-            TILES[$index]="Clone ${MONITORS[$entry_a]} -> ${MONITORS[$entry_b]}"
+            TILES[$index]="Clone ${MONITORS[$entry_b]} -> ${MONITORS[$entry_a]}"
             COMMANDS[$index]="xrandr --output ${MONITORS[$entry_a]} --auto \
                               --output ${MONITORS[$entry_b]} --auto --same-as ${MONITORS[$entry_a]}"
 
@@ -107,7 +107,7 @@ do
         do
             if [ $entry_a != $entry_b ] && [ $entry_a != $entry_c ] && [ $entry_b != $entry_c ]
             then
-                TILES[$index]=" ${MONITORS[$entry_a]} -> ${MONITORS[$entry_b]} -> ${MONITORS[$entry_c]}"
+                TILES[$index]=" ${MONITORS[$entry_c]} -> ${MONITORS[$entry_b]} -> ${MONITORS[$entry_a]}"
                 COMMANDS[$index]="xrandr --output ${MONITORS[$entry_a]} --auto \
                     --output ${MONITORS[$entry_b]} --auto --left-of ${MONITORS[$entry_a]} \
                     --output ${MONITORS[$entry_c]} --auto --left-of ${MONITORS[$entry_b]}"
