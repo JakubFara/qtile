@@ -13,6 +13,8 @@ wallpapers = [
     'forrest.png',
     'deer.jpg',
     'autumn.jpg',
+    'fjord.jpg'
+    'river.jpg'
 ]
 
 def get_wallpaper(generate_random=True):
