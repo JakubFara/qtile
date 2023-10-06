@@ -64,7 +64,7 @@ class MyCalendar(widget.KhalCalendar):
         # icon = "\U0001f4c5"
         # icon = "\U0001f5d3"
         icon = ICONS["calendar"]
-        return f"{icon}" + f"{now}".split(" ")[0].replace("-", "/")
+        return f"{icon} " + f"{now}".split(" ")[0].replace("-", "/")
 
 
 @unique
@@ -86,6 +86,10 @@ BatteryStatus = NamedTuple(
 )
 
 class MyBattery(widget.Battery):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.charging_icon = None
+
     def build_string(self, status: BatteryStatus) -> str:
         if self.hide_threshold is not None and status.percent > self.hide_threshold:
             return ""
@@ -97,39 +101,64 @@ class MyBattery(widget.Battery):
                 self.layout.colour = self.foreground
                 self.background = self.normal_background
 
-        if status.state == BatteryState.CHARGING:
-            char = self.charge_char
-            return " ".format(
-                char=char, percent=status.percent, watt=status.power, hour=hour, min=minute
-            )
-        elif status.state == BatteryState.DISCHARGING:
-            char = self.discharge_char
+        statusf = "/sys/class/power_supply/BAT0/status"
+        with open(statusf) as f:
+            # pass
+            status_ = f.read()
+        # if status.state == BatteryState.CHARGING:
+        #     char = self.charge_char
+        #     return " ".format(
+        #         char=char, percent=status.percent, watt=status.power, hour=hour, min=minute
+        #     )
         # elif status.state == BatteryState.FULL:
             # if self.show_short_text:
             #     return "Full"
             # char = self.full_char
-        elif status.state == BatteryState.EMPTY or (
-            status.state == BatteryState.UNKNOWN and status.percent == 0
-        ):
-            if self.show_short_text:
-                return "Empty"
-            char = self.empty_char
-        else:
-            char = self.unknown_char
+        # elif status.state == BatteryState.EMPTY or (
+        #     status.state == BatteryState.UNKNOWN and status.percent == 0
+        # ):
+        #     if self.show_short_text:
+        #         return "Empty"
+        #     char = self.empty_char
+        # else:
+        #     char = self.unknown_char
 
         hour = status.time // 3600
         minute = (status.time // 60) % 60
 
-        if status.percent < 0.1:
-            fmt = ICONS["battery_0"] + " {percent:2.0%}"
-        elif status.percent < 0.3:
-            fmt = ICONS["battery_1"] + " {percent:2.0%}"
-        elif status.percent < 0.6:
-            fmt = ICONS["battery_2"] + " {percent:2.0%}"
-        elif status.percent < 0.9:
-            fmt = ICONS["battery_3"] + " {percent:2.0%}"
+
+        if status_ != "Discharging\n":
+            # char = self.discharge_char
+            if self.charging_icon is None:
+                self.charging_icon = ICONS["battery_0"]
+
+            if self.charging_icon == ICONS["battery_0"]:
+                fmt = ICONS["battery_0"] + " {percent:2.0%}"
+                self.charging_icon = ICONS["battery_1"]
+            elif self.charging_icon == ICONS["battery_1"]:
+                fmt = ICONS["battery_1"] + " {percent:2.0%}"
+                self.charging_icon = ICONS["battery_2"]
+            elif self.charging_icon == ICONS["battery_2"]:
+                fmt = ICONS["battery_2"] + " {percent:2.0%}"
+                self.charging_icon = ICONS["battery_3"]
+            elif self.charging_icon == ICONS["battery_3"]:
+                fmt = ICONS["battery_3"] + " {percent:2.0%}"
+                self.charging_icon = ICONS["battery_4"]
+            else:
+                fmt = ICONS["battery_4"] + " {percent:2.0%}"
+                self.charging_icon = ICONS["battery_0"]
+            # fmt = ICONS["battery_4"] + " {percent:2.0%}"
         else:
-            fmt = ICONS["battery_4"] + " {percent:2.0%}"
+            if status.percent < 0.1:
+                fmt = ICONS["battery_0"] + " {percent:2.0%}"
+            elif status.percent < 0.3:
+                fmt = ICONS["battery_1"] + " {percent:2.0%}"
+            elif status.percent < 0.6:
+                fmt = ICONS["battery_2"] + " {percent:2.0%}"
+            elif status.percent < 0.9:
+                fmt = ICONS["battery_3"] + " {percent:2.0%}"
+            else:
+                fmt = ICONS["battery_4"] + " {percent:2.0%}"
         return fmt.format(
-            char=char, percent=status.percent, watt=status.power, hour=hour, min=minute
+            percent=status.percent, watt=status.power, hour=hour, min=minute
         )

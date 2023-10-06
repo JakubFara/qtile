@@ -297,6 +297,7 @@ bar = Bar(
             format="lol",
             padding=5,
             low_foreground="red",
+            update_interval=1,
             **powerline_left
         ),
         widget.TextBox(" ", name="default", **powerline),
