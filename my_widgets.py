@@ -100,11 +100,12 @@ class MyBattery(widget.Battery):
 
         statusf = "/sys/class/power_supply/BAT0/status"
         with open(statusf) as f:
-            # pass
             status_ = f.read()
 
         if status_ != "Discharging\n":
-            # char = self.discharge_char
+            # if it is charging change the buttery icons
+            # such that it is charging ityis necessary
+            # to change `update_interval=1` in the MyButtery instance
             if self.charging_icon is None:
                 self.charging_icon = ICONS["battery_0"]
 

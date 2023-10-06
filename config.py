@@ -60,11 +60,14 @@ from palette import palette
 from my_widgets import MyBattery, MyCalendar, MyVolume
 from icons import ICONS
 from qtile_extras.widget.decorations import PowerLineDecoration, RectDecoration
+from wallpaper import get_wallpaper
+
 
 mod = "mod4"
 home_dir = "/home/jakub/"
 # terminal = guess_terminal()
 terminal = "gnome-terminal"
+random_wallpaper = False
 # path_to_config = os.path.abspath(__file__)[:-len(__file__)]
 
 keys = [
@@ -325,7 +328,7 @@ bar = Bar(
         ),
         widget.TextBox(" ", name="default", **powerline),
         widget.Clock(
-            fmt=ICONS["clock"],
+            fmt= ICONS["clock"] + " {}",
             foreground=palette.base,
             background=palette.red,
             **powerline_left
@@ -344,20 +347,21 @@ bar = Bar(
     background=background
 )
 
+wallpaper = get_wallpaper(generate_random=random_wallpaper)
 screens = [
     Screen(
         top=bar,
-        wallpaper='~/.config/qtile/background.jpg',
+        wallpaper_mode='stretch',
+        wallpaper=wallpaper,
+    ),
+
+    Screen(
+        wallpaper=wallpaper,
         wallpaper_mode='stretch',
     ),
 
     Screen(
-        wallpaper='~/.config/qtile/background.jpg',
-        wallpaper_mode='stretch',
-    ),
-
-    Screen(
-        wallpaper='~/.config/qtile/background.jpg',
+        wallpaper=wallpaper,
         wallpaper_mode='stretch',
     )
 ]

@@ -35,7 +35,7 @@ ICONS = {
     "volume_2": "&#xf027;",
     "volume_3": "&#xf028;",
 
-    "clock": "&#xf017;{}",
+    "clock": "&#xf017;",
 
     "turnoff": "&#xf011;",
 
