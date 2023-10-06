@@ -1,10 +1,7 @@
 from qtile_extras import widget
 from enum import Enum, unique
-from typing import TYPE_CHECKING, NamedTuple
-import subprocess
+from typing import NamedTuple
 import datetime
-import string
-import dateutil.parser
 from icons import ICONS
 
 
@@ -105,27 +102,6 @@ class MyBattery(widget.Battery):
         with open(statusf) as f:
             # pass
             status_ = f.read()
-        # if status.state == BatteryState.CHARGING:
-        #     char = self.charge_char
-        #     return " ".format(
-        #         char=char, percent=status.percent, watt=status.power, hour=hour, min=minute
-        #     )
-        # elif status.state == BatteryState.FULL:
-            # if self.show_short_text:
-            #     return "Full"
-            # char = self.full_char
-        # elif status.state == BatteryState.EMPTY or (
-        #     status.state == BatteryState.UNKNOWN and status.percent == 0
-        # ):
-        #     if self.show_short_text:
-        #         return "Empty"
-        #     char = self.empty_char
-        # else:
-        #     char = self.unknown_char
-
-        hour = status.time // 3600
-        minute = (status.time // 60) % 60
-
 
         if status_ != "Discharging\n":
             # char = self.discharge_char
@@ -147,7 +123,6 @@ class MyBattery(widget.Battery):
             else:
                 fmt = ICONS["battery_4"] + " {percent:2.0%}"
                 self.charging_icon = ICONS["battery_0"]
-            # fmt = ICONS["battery_4"] + " {percent:2.0%}"
         else:
             if status.percent < 0.1:
                 fmt = ICONS["battery_0"] + " {percent:2.0%}"
@@ -160,5 +135,5 @@ class MyBattery(widget.Battery):
             else:
                 fmt = ICONS["battery_4"] + " {percent:2.0%}"
         return fmt.format(
-            percent=status.percent, watt=status.power, hour=hour, min=minute
+            percent=status.percent, watt=status.power
         )
