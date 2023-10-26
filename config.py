@@ -30,6 +30,7 @@ from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 from libqtile.log_utils import logger
 import os
+from libqtile import bar
 from libqtile import hook
 from libqtile.layout.columns import Columns
 from libqtile.layout.verticaltile import VerticalTile
@@ -57,7 +58,7 @@ from colors import nord_fox
 from qtile_extras import widget
 # from src.bar1 import bar
 from palette import palette
-from my_widgets import MyBattery, MyCalendar, MyVolume
+from my_widgets import MyBattery, MyCalendar, MyVolume, WiFi, PowerOff # , WiFi2
 from icons import ICONS
 from qtile_extras.widget.decorations import PowerLineDecoration, RectDecoration
 from wallpaper import get_wallpaper
@@ -216,6 +217,12 @@ for i in groups:
                 lazy.window.togroup(i.name, switch_group=True),
                 desc="Switch to & move focused window to group {}".format(i.name),
             ),
+            Key(
+                [mod, "control"],
+                i.name,
+                lazy.window.togroup(i.name, switch_group=False),
+                desc="Switch to & move focused window to group {}".format(i.name),
+            ),
             # Or, use below if you prefer not to switch to that group.
             # # mod1 + shift + letter of group = move focused window to group
             # Key([mod, "shift"], i.name, lazy.window.togroup(i.name),
@@ -268,11 +275,11 @@ powerline_left = {
 
 # background = "#000000a0"
 background = palette.surface0 + "80"
-
 bar = Bar(
     [
         # widget.TextBox("", background="", name="default", **powerline),
-        widget.TextBox(" ", background=background, name="default", **powerline),
+        widget.TextBox("   ", background="#00000000", name="default", **powerline),
+        widget.TextBox("", width=1, name="default", background=background, **powerline),
         # widget.Bluetooth(
         #     font="MesloLGS NF Regular",
         #     hci0="/dev_F8_94_C2_D5_B1_E0",
@@ -281,30 +288,32 @@ bar = Bar(
         #     # fontsize=14,
         #     **powerline
         # ),
-        widget.GroupBox(foreground=palette.maroon, background=palette.subtext0, **powerline_left),
-        widget.TextBox(" ", name="default", **powerline),
-        widget.WindowName(foreground="#00000000", background=background, **powerline),
-        widget.TextBox(" ", name="default", **powerline),
-        MyCalendar(foreground="#000000", background=palette.subtext0, **powerline_left),
-        # widget.GroupBox(foreground=palette.base, background=palette.crust, **powerline_left),
-        widget.TextBox(" ", name="default", **powerline),
-        widget.CurrentLayoutIcon(foreground=palette.base, background=palette.sky, **powerline_left),
-        widget.TextBox("", background="", name="default", **powerline),
-        widget.TextBox(" ", name="default", **powerline),
-        # widget.UPowerWidget(background=palette.crust, **powerline_left),
-        MyBattery(
-            background=palette.rosewater,
+        widget.Clock(
+            fmt=ICONS["clock"] + " {}",
             foreground=palette.base,
-            font="Font Awesome",
-            # format=f"{icons['battery']}" + '{percent:2.0%}',
-            format="lol",
-            padding=5,
-            low_foreground="red",
-            update_interval=1,
+            background=palette.red,
             **powerline_left
         ),
-        widget.TextBox(" ", name="default", **powerline),
-
+        widget.TextBox(" ", background=background, name="default", **powerline),
+        MyCalendar(foreground="#000000", background=palette.subtext0, **powerline_left),
+        widget.Spacer(background=background, length=bar.STRETCH),
+        widget.TextBox(" ", background=background, name="default", **powerline),
+        widget.GroupBox(foreground=palette.maroon, background=palette.subtext0, **powerline_left),
+        widget.TextBox(" ", background=background, name="default", **powerline),
+        widget.WindowName(foreground="#00000000", background=background, **powerline),
+        widget.TextBox(" ", background=background, name="default", **powerline),
+        WiFi(
+            width=16, foreground="#000000", background=palette.sky,
+             **powerline_left),
+        # widget.GroupBox(foreground=palette.base, background=palette.crust, **powerline_left),
+        widget.TextBox(" ", background=background, name="default", **powerline),
+        widget.CurrentLayoutIcon(
+            foreground=palette.base,
+            background=palette.rosewater,
+            **powerline_left
+        ),
+        widget.TextBox("", background=background, name="default", **powerline),
+        widget.TextBox(" ", background=background, name="default", **powerline),
         MyVolume(
             foreground=palette.base,
             background=palette.blue,
@@ -326,25 +335,37 @@ bar = Bar(
             width=40,
             **powerline_left
         ),
-        widget.TextBox(" ", name="default", **powerline),
-        widget.Clock(
-            fmt= ICONS["clock"] + " {}",
-            foreground=palette.base,
+        # widget.UPowerWidget(background=palette.crust, **powerline_left),
+        widget.TextBox(" ", background=background, name="default", **powerline),
+
+        MyBattery(
             background=palette.red,
+            foreground=palette.base,
+            font="Font Awesome",
+            # format=f"{icons['battery']}" + '{percent:2.0%}',
+            format="lol",
+            padding=5,
+            low_foreground="red",
+            update_interval=1,
             **powerline_left
         ),
-        widget.TextBox(" ", name="default", **powerline),
-        widget.QuickExit(
-            default_text=ICONS["turnoff"],
+        widget.TextBox(" ", background=background, name="default", **powerline),
+        PowerOff(
+            ICONS["turnoff"],
             reground=palette.base,
+            foreground=palette.base,
             background=palette.subtext0,
             **powerline_left
         ),
+        widget.TextBox("", width=1, name="default", background=background, **powerline_left),
+        widget.TextBox("", width=1, name="default", background="#00000000", **powerline),
+
        # widget.TextBox(" ", name="default", **powerline_left),
     ],
     30,
     # opacity=0.8,
-    background=background
+    # background=background
+    background="#00000000",
 )
 
 wallpaper = get_wallpaper(generate_random=random_wallpaper)
