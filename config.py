@@ -24,6 +24,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import libqtile
 from libqtile import layout
 from libqtile.config import Click, Drag, Group, Key, Match, Screen, Bar
 from libqtile.lazy import lazy
@@ -58,7 +59,7 @@ from colors import nord_fox
 from qtile_extras import widget
 # from src.bar1 import bar
 from palette import palette
-from my_widgets import MyBattery, MyCalendar, MyVolume, WiFi, PowerOff # , WiFi2
+from my_widgets import MyBattery, MyCalendar, MyVolume, PowerOff # , WiFi2
 from icons import ICONS
 from qtile_extras.widget.decorations import PowerLineDecoration, RectDecoration
 from wallpaper import get_wallpaper
@@ -67,7 +68,8 @@ from wallpaper import get_wallpaper
 mod = "mod4"
 home_dir = "/home/jakub/"
 # terminal = guess_terminal()
-terminal = "gnome-terminal"
+# terminal = "gnome-terminal"
+terminal = "kitty"
 random_wallpaper = False
 # path_to_config = os.path.abspath(__file__)[:-len(__file__)]
 
@@ -153,13 +155,15 @@ keys = [
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "a", lazy.spawn("rofi -show drun -show-icons -modi drun, run"), desc="Spawn a command using a prompt widget"),
     Key([mod], "k", lazy.spawn(f"{home_dir}/.config/qtile/rofi/kill-process.sh"), desc="Kill process with rofi"),
-    Key([mod], "n", lazy.spawn("/home/jakub/Programming/my_keyboard/src/switch_keyboards.sh"), desc="Swith keyboards."),
+    Key([mod], "s", lazy.spawn(f"{home_dir}/.config/qtile/rofi/connect_sshfs.sh"), desc="Kill process with rofi"),
     Key([mod], "o", lazy.spawn("rofi -show window"), desc="Show all running apps."),
+    Key([mod], "n", lazy.spawn(f"{home_dir}/.config/qtile/scripts/my_keyboard/src/switch_keyboards.sh"), desc="Switch keyboards"),
     Key([mod], "Print", lazy.spawn("flameshot gui"), desc="Show all running apps."),
+    Key([mod, "shift"], "r", lazy.spawn("qtile cmd-obj -o cmd -f restart")),
 ]
 
 groups = [
-    Group("1", spawn="google-chrome"),
+    Group("1", spawn="firefox"),
     Group("2", spawn="emacs"),
     Group("3", spawn=["discord", "skype"]),
     Group("4", spawn=[]),
@@ -181,16 +185,28 @@ groups.append(
                 height=0.5,
                 x=0.3,
                 y=0.1,
-                opacity=1
+                opacity=1,
+                on_focus_lost_hide=False,
             ),
             DropDown(
                 'file manager',
-                'thunar',
-                width=0.4,
-                height=0.5,
-                x=0.3,
-                y=0.1,
-                opacity=1
+                ['kitty', '-e', 'env', 'EDITOR=nvim', 'ranger'],
+                width=0.7,
+                height=0.7,
+                x=0.15,
+                y=0.15,
+                opacity=1,
+                on_focus_lost_hide=False,
+            ),
+            DropDown(
+                'music player',
+                'spotify',
+                width=0.7,
+                height=0.7,
+                x=0.15,
+                y=0.15,
+                opacity=1,
+                on_focus_lost_hide=False,
             ),
         ]
     )
@@ -198,6 +214,10 @@ groups.append(
 keys.extend([
     Key([mod], "u", lazy.group['0'].dropdown_toggle('term')),
     Key([mod], "y", lazy.group['0'].dropdown_toggle('file manager')),
+    Key([], "f5", lazy.group['0'].dropdown_toggle('music player')),
+    Key([], "f6", lazy.spawn("playerctl --player=spotify previous")),
+    Key([], "f7", lazy.spawn("playerctl --player=spotify play-pause")),
+    Key([], "f8", lazy.spawn("playerctl --player=spotify next")),
 ])
 
 for i in groups:
@@ -273,6 +293,10 @@ powerline_left = {
     ]
 }
 
+def kill_process(qtile):
+    # qtile.cmd_spawn("rofi -show window")
+    # subprocess.run(["rofi -show window"], shell=True, capture_output=True, text=True)
+    subprocess.run(["rofi -show window"], shell=True, capture_output=True, text=True)
 # background = "#000000a0"
 background = palette.surface0 + "80"
 bar = Bar(
@@ -289,7 +313,7 @@ bar = Bar(
         #     **powerline
         # ),
         widget.Clock(
-            fmt=ICONS["clock"] + " {}",
+            fmt=ICONS["clock"] + "  {}",
             foreground=palette.base,
             background=palette.red,
             **powerline_left
@@ -302,9 +326,9 @@ bar = Bar(
         widget.TextBox(" ", background=background, name="default", **powerline),
         widget.WindowName(foreground="#00000000", background=background, **powerline),
         widget.TextBox(" ", background=background, name="default", **powerline),
-        WiFi(
-            width=16, foreground="#000000", background=palette.sky,
-             **powerline_left),
+        # WiFi(
+        #     width=16, foreground="#000000", background=palette.sky,
+        #      **powerline_left),
         # widget.GroupBox(foreground=palette.base, background=palette.crust, **powerline_left),
         widget.TextBox(" ", background=background, name="default", **powerline),
         widget.CurrentLayoutIcon(
@@ -350,11 +374,12 @@ bar = Bar(
             **powerline_left
         ),
         widget.TextBox(" ", background=background, name="default", **powerline),
-        PowerOff(
-            ICONS["turnoff"],
+        PowerOff( 
+            ICONS["turnoff"] + " ",
             reground=palette.base,
             foreground=palette.base,
             background=palette.subtext0,
+            # mouse_callbacks={"Button1": kill_process},
             **powerline_left
         ),
         widget.TextBox("", width=1, name="default", background=background, **powerline_left),

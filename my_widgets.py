@@ -1,4 +1,5 @@
 from qtile_extras import widget
+import subprocess
 from enum import Enum, unique
 from typing import NamedTuple
 import datetime
@@ -61,7 +62,7 @@ class MyCalendar(widget.KhalCalendar):
         # icon = "\U0001f4c5"
         # icon = "\U0001f5d3"
         icon = ICONS["calendar"]
-        return f"{icon} " + f"{now}".split(" ")[0].replace("-", "/")
+        return f"{icon}  " + f"{now}".split(" ")[0].replace("-", "/")
 
 
 @unique
@@ -102,7 +103,7 @@ class MyBattery(widget.Battery):
         with open(statusf) as f:
             status_ = f.read()
 
-        if status_ != "Discharging\n":
+        if status_ != "Discharging\n" and status.percent < 0.99:
             # if it is charging change the buttery icons
             # such that it is charging ityis necessary
             # to change `update_interval=1` in the MyButtery instance
@@ -138,3 +139,15 @@ class MyBattery(widget.Battery):
         return fmt.format(
             percent=status.percent, watt=status.power
         )
+
+
+class PowerOff(widget.TextBox):
+    def button_press(self, x, y, button):
+        subprocess.run(
+            ["rofi -show power-menu -modi power-menu:rofi-power-menu"],
+            shell=True, capture_output=True, text=True
+        )
+
+# pass
+#    def mouse_enter(self, *args, **kwargs):
+#        subprocess.run(["/home/jakub/.config/qtile/rofi/kill-process.sh"])
