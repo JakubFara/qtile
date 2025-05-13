@@ -68,8 +68,8 @@ from wallpaper import get_wallpaper
 mod = "mod4"
 home_dir = "/home/jakub/"
 # terminal = guess_terminal()
-# terminal = "gnome-terminal"
-terminal = "kitty"
+terminal = "gnome-terminal"
+# terminal = "kitty"
 random_wallpaper = False
 # path_to_config = os.path.abspath(__file__)[:-len(__file__)]
 
