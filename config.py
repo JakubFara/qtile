@@ -73,6 +73,12 @@ terminal = "gnome-terminal"
 random_wallpaper = False
 # path_to_config = os.path.abspath(__file__)[:-len(__file__)]
 
+@lazy.function
+def resize_floating_window(qtile, width: int = 0, height: int = 0):
+    w = qtile.current_window
+    w.cmd_set_size_floating(w.width + width, w.height + height)
+
+
 keys = [
     # A list of available commands that can be bound to keys can be found
     # at https://docs.qtile.org/en/latest/manual/config/lazy.html
@@ -101,6 +107,8 @@ keys = [
     Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
     Key([mod, "control"], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
     Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
+
+
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
@@ -165,9 +173,9 @@ keys = [
 ]
 
 groups = [
-    Group("1", spawn="firefox"),
-    Group("2", spawn="emacs"),
-    Group("3", spawn=["discord", "skype"]),
+    Group("1", spawn="google-chrome"),
+    Group("2", spawn="emacs-28.1"),
+    Group("3", spawn=[]),
     Group("4", spawn=[]),
     Group("5", spawn=["gnome-control-center", "blueman-manager"]),
     Group("6"),
