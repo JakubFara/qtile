@@ -4,7 +4,7 @@
 # ~/Programming/my_keyboard/src/switch_keyboards.sh
 setxkbmap -layout nm
 # ~/Programming/xrandr/xrandr.sh
-/usr/bin/emacs --daemon
+# /usr/bin/emacs --daemon
 compton &
 pulseaudio -k # && sudo alsa force-reload
 # pulseaudio --start
