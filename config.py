@@ -154,6 +154,7 @@ keys = [
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "a", lazy.spawn("rofi -show drun -show-icons -modi drun, run"), desc="Spawn a command using a prompt widget"),
+    Key([mod], "i", lazy.spawn(f"{home_dir}/.config/qtile/rofi/wifi.sh"), desc="Connect to wifi"),
     Key([mod], "k", lazy.spawn(f"{home_dir}/.config/qtile/rofi/kill-process.sh"), desc="Kill process with rofi"),
     Key([mod], "s", lazy.spawn(f"{home_dir}/.config/qtile/rofi/connect_sshfs.sh"), desc="Kill process with rofi"),
     Key([mod], "o", lazy.spawn("rofi -show window"), desc="Show all running apps."),
