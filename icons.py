@@ -28,16 +28,16 @@ ICONS = {
 
     "systray": "",  # fa-fedora
 
-    "cross": "&#xf057;",
     "calendar": "&#xf073;",
-    "volume_0": "&#xf026;",
-    "volume_1": "&#xf027;",
-    "volume_2": "&#xf027;",
-    "volume_3": "&#xf028;",
+    "volume_0": "\uf026",   # U+F026
+    "volume_1": "\uf027",   # U+F027
+    "volume_2": "\uf027",   # you can swap this if you like
+    "volume_3": "\uf028",   # U+F028
+    "cross":    "\uf00d",   # U+F00D   "volume_3": "&#xf028;",
 
     "clock": "&#xf017;",
 
-    "turnoff": "&#xf011;",
+    "turnoff": "",
 
     "battery_0": "&#xf244;",
     "battery_1": "&#xf243;",

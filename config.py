@@ -251,27 +251,22 @@ for i in groups:
         ]
     )
 
-layouts = [
-    layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=4),
-    layout.Max(),
-]
-
 margin_const=4
 
 layouts = [
-    layout.MonadTall(
-        border_focus="#9ccfd8",
-        border_normal="#31748f",
-        border_width=1,
-        margin=margin_const
-    ),
-    layout.Max(),
+    # layout.MonadTall(
+    #     border_focus="#9ccfd8",
+    #     border_normal="#31748f",
+    #     border_width=1,
+    #     margin=margin_const
+    # ),
+    # layout.Max(),
     layout.Bsp(border_focus="#9ccfd8", border_normal="#31748f",
                border_width=1, margin=margin_const),
-    layout.MonadWide(border_focus="#9ccfd8",
-                     border_normal="#31748f", border_width=1, margin=margin_const),
-    layout.RatioTile(border_focus="#9ccfd8",
-                     border_normal="#31748f", border_width=1, margin=margin_const),
+    # layout.MonadWide(border_focus="#9ccfd8",
+    #                  border_normal="#31748f", border_width=1, margin=margin_const),
+    # layout.RatioTile(border_focus="#9ccfd8",
+    #                  border_normal="#31748f", border_width=1, margin=margin_const),
     # layout.Matrix(),
 ]
 # widget_defaults = dict(
@@ -315,6 +310,7 @@ bar = Bar(
         # ),
         widget.Clock(
             fmt=ICONS["clock"] + "  {}",
+            font="FontAwesome",
             foreground=palette.base,
             background=palette.red,
             **powerline_left
@@ -343,6 +339,7 @@ bar = Bar(
             foreground=palette.base,
             background=palette.blue,
             emoji=True,
+            font="FontAwesome",
             mute_command=[
                 'pactl set-sink-mute 0 toggle'
             ],
@@ -354,6 +351,7 @@ bar = Bar(
             foreground=palette.base,
             background=palette.blue,
             emoji=False,
+            font="FontAwesome",
             mute_command=[
                 'pactl set-sink-mute 0 toggle'
             ],
@@ -366,7 +364,7 @@ bar = Bar(
         MyBattery(
             background=palette.red,
             foreground=palette.base,
-            font="Font Awesome",
+            font="FontAwesome",
             # format=f"{icons['battery']}" + '{percent:2.0%}',
             format="lol",
             padding=5,
@@ -377,6 +375,7 @@ bar = Bar(
         widget.TextBox(" ", background=background, name="default", **powerline),
         PowerOff( 
             ICONS["turnoff"] + " ",
+            font='FontAwesome',
             reground=palette.base,
             foreground=palette.base,
             background=palette.subtext0,
